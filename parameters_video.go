@@ -14,57 +14,57 @@ import (
 )
 
 const (
-	ParameterDisplayregion                   ParameterGroupVideo = iota // Takes a @ref MMAL_DISPLAYREGION_T
-	ParameterSupportedProfiles                                          // Takes a @ref MMAL_PARAMETER_VIDEO_PROFILE_T
-	ParameterProfile                                                    // Takes a @ref MMAL_PARAMETER_VIDEO_PROFILE_T
-	ParameterIntraperiod                                                // Takes a @ref MMAL_PARAMETER_UINT32_T
-	ParameterRatecontrol                                                // Takes a @ref MMAL_PARAMETER_VIDEO_RATECONTROL_T
-	ParameterNalunitformat                                              // Takes a @ref MMAL_PARAMETER_VIDEO_NALUNITFORMAT_T
-	ParameterMinimiseFragmentation                                      // Takes a @ref MMAL_PARAMETER_BOOLEAN_T
-	ParameterMbRowsPerSlice                                             // Takes a @ref MMAL_PARAMETER_UINT32_T. Setting the value to zero resets to the default (one slice per frame)
-	ParameterVideoLevelExtension                                        // Takes a @ref MMAL_PARAMETER_VIDEO_LEVEL_EXTENSION_T
-	ParameterVideoEedeEnable                                            // Takes a @ref MMAL_PARAMETER_VIDEO_EEDE_ENABLE_T
-	ParameterVideoEedeLossrate                                          // Takes a @ref MMAL_PARAMETER_VIDEO_EEDE_LOSSRATE_T
-	ParameterVideoRequestIFrame                                         // Takes a @ref MMAL_PARAMETER_BOOLEAN_T. Request an I-frame
-	ParameterVideoIntraRefresh                                          // Takes a @ref MMAL_PARAMETER_VIDEO_INTRA_REFRESH_T
-	ParameterVideoImmutableInput                                        // Takes a @ref MMAL_PARAMETER_BOOLEAN_T
-	ParameterVideoBitRate                                               // Takes a @ref MMAL_PARAMETER_UINT32_T. Run-time bit rate control
-	ParameterVideoFrameRate                                             // Takes a @ref MMAL_PARAMETER_FRAME_RATE_T
-	ParameterVideoEncodeMinQuant                                        // Takes a @ref MMAL_PARAMETER_UINT32_T
-	ParameterVideoEncodeMaxQuant                                        // Takes a @ref MMAL_PARAMETER_UINT32_T
-	ParameterVideoEncodeRcModel                                         // Takes a @ref MMAL_PARAMETER_VIDEO_ENCODE_RC_MODEL_T
-	ParameterExtraBuffers                                               // Takes a @ref MMAL_PARAMETER_UINT32_T
-	ParameterVideoAlignHoriz                                            // Takes a @ref MMAL_PARAMETER_UINT32_T. Changing this paramater from the default can reduce frame rate because image buffers need to be re-pitched.*/
-	ParameterVideoAlignVert                                             // Takes a @ref MMAL_PARAMETER_UINT32_T. Changing this paramater from the default can reduce frame rate because image buffers need to be re-pitched.*/
-	ParameterVideoDroppablePframes                                      // Take a @ref MMAL_PARAMETER_BOOLEAN_T
-	ParameterVideoEncodeInitialQuant                                    // Takes a @ref MMAL_PARAMETER_UINT32_T
-	ParameterVideoEncodeQpP                                             // Takes a @ref MMAL_PARAMETER_UINT32_T
-	ParameterVideoEncodeRcSliceDquant                                   // Takes a @ref MMAL_PARAMETER_UINT32_T
-	ParameterVideoEncodeFrameLimitBits                                  // Takes a @ref MMAL_PARAMETER_UINT32_T
-	ParameterVideoEncodePeakRate                                        // Takes a @ref MMAL_PARAMETER_UINT32_T
-	ParameterVideoEncodeH264DisableCabac                                // Take a @ref MMAL_PARAMETER_BOOLEAN_T
-	ParameterVideoEncodeH264LowLatency                                  // Take a @ref MMAL_PARAMETER_BOOLEAN_T
-	ParameterVideoEncodeH264AuDelimiters                                // Take a @ref MMAL_PARAMETER_BOOLEAN_T
-	ParameterVideoEncodeH264DeblockIDC                                  // Takes a @ref MMAL_PARAMETER_UINT32_T
-	ParameterVideoEncodeH264MbIntraMode                                 // Takes a @ref MMAL_PARAMETER_VIDEO_ENCODER_H264_MB_INTRA_MODES_T
-	ParameterVideoEncodeHeaderOnOpen                                    // Takes a @ref MMAL_PARAMETER_BOOLEAN_T
-	ParameterVideoEncodePrecodeForQp                                    // Takes a @ref MMAL_PARAMETER_BOOLEAN_T
-	ParameterVideoDRMInitInfo                                           // Takes a @ref MMAL_PARAMETER_VIDEO_DRM_INIT_INFO_T
-	ParameterVideoTimestampFifo                                         // Takes a @ref MMAL_PARAMETER_BOOLEAN_T
-	ParameterVideoDecodeErrorConcealment                                // Takes a @ref MMAL_PARAMETER_BOOLEAN_T
-	ParameterVideoDRMProtectBuffer                                      // Takes a @ref MMAL_PARAMETER_VIDEO_DRM_PROTECT_BUFFER_T
-	ParameterVideoDecodeConfigVD3                                       // Takes a @ref MMAL_PARAMETER_BYTES_T
-	ParameterVideoEncodeH264VCLHRDParameters                            // Take a @ref MMAL_PARAMETER_BOOLEAN_T
-	ParameterVideoEncodeH264LowDelayHRDFlag                             // Take a @ref MMAL_PARAMETER_BOOLEAN_T
-	ParameterVideoEncodeInLineHeader                                    // Take a @ref MMAL_PARAMETER_BOOLEAN_T
-	ParameterVideoEncodeSeiEnable                                       // Take a @ref MMAL_PARAMETER_BOOLEAN_T
-	ParameterVideoEncodeInlineVectors                                   // Take a @ref MMAL_PARAMETER_BOOLEAN_T
-	ParameterVideoRenderStats                                           // Take a @ref MMAL_PARAMETER_VIDEO_RENDER_STATS_T
-	ParameterVideoInterlaceType                                         // Take a @ref MMAL_PARAMETER_VIDEO_INTERLACE_TYPE_T
-	ParameterVideoInterpolateTimestamps                                 // Takes a @ref MMAL_PARAMETER_BOOLEAN_T
-	ParameterVideoEncodeSPSTiming                                       // Take a @ref MMAL_PARAMETER_BOOLEAN_T
-	ParameterVideoMaxNumCallbacks                                       // Take a @ref MMAL_PARAMETER_UINT32_T
-	ParameterVideoSourcePattern                                         // Take a @ref MMAL_PARAMETER_SOURCE_PATTERN_T
+	ParameterDisplayregion                   ParameterGroupVideo = (2 << 16) + iota // Takes a @ref MMAL_DISPLAYREGION_T
+	ParameterSupportedProfiles                                                      // Takes a @ref MMAL_PARAMETER_VIDEO_PROFILE_T
+	ParameterProfile                                                                // Takes a @ref MMAL_PARAMETER_VIDEO_PROFILE_T
+	ParameterIntraperiod                                                            // Takes a @ref MMAL_PARAMETER_UINT32_T
+	ParameterRatecontrol                                                            // Takes a @ref MMAL_PARAMETER_VIDEO_RATECONTROL_T
+	ParameterNalunitformat                                                          // Takes a @ref MMAL_PARAMETER_VIDEO_NALUNITFORMAT_T
+	ParameterMinimiseFragmentation                                                  // Takes a @ref MMAL_PARAMETER_BOOLEAN_T
+	ParameterMbRowsPerSlice                                                         // Takes a @ref MMAL_PARAMETER_UINT32_T. Setting the value to zero resets to the default (one slice per frame)
+	ParameterVideoLevelExtension                                                    // Takes a @ref MMAL_PARAMETER_VIDEO_LEVEL_EXTENSION_T
+	ParameterVideoEedeEnable                                                        // Takes a @ref MMAL_PARAMETER_VIDEO_EEDE_ENABLE_T
+	ParameterVideoEedeLossrate                                                      // Takes a @ref MMAL_PARAMETER_VIDEO_EEDE_LOSSRATE_T
+	ParameterVideoRequestIFrame                                                     // Takes a @ref MMAL_PARAMETER_BOOLEAN_T. Request an I-frame
+	ParameterVideoIntraRefresh                                                      // Takes a @ref MMAL_PARAMETER_VIDEO_INTRA_REFRESH_T
+	ParameterVideoImmutableInput                                                    // Takes a @ref MMAL_PARAMETER_BOOLEAN_T
+	ParameterVideoBitRate                                                           // Takes a @ref MMAL_PARAMETER_UINT32_T. Run-time bit rate control
+	ParameterVideoFrameRate                                                         // Takes a @ref MMAL_PARAMETER_FRAME_RATE_T
+	ParameterVideoEncodeMinQuant                                                    // Takes a @ref MMAL_PARAMETER_UINT32_T
+	ParameterVideoEncodeMaxQuant                                                    // Takes a @ref MMAL_PARAMETER_UINT32_T
+	ParameterVideoEncodeRcModel                                                     // Takes a @ref MMAL_PARAMETER_VIDEO_ENCODE_RC_MODEL_T
+	ParameterExtraBuffers                                                           // Takes a @ref MMAL_PARAMETER_UINT32_T
+	ParameterVideoAlignHoriz                                                        // Takes a @ref MMAL_PARAMETER_UINT32_T. Changing this paramater from the default can reduce frame rate because image buffers need to be re-pitched.*/
+	ParameterVideoAlignVert                                                         // Takes a @ref MMAL_PARAMETER_UINT32_T. Changing this paramater from the default can reduce frame rate because image buffers need to be re-pitched.*/
+	ParameterVideoDroppablePframes                                                  // Take a @ref MMAL_PARAMETER_BOOLEAN_T
+	ParameterVideoEncodeInitialQuant                                                // Takes a @ref MMAL_PARAMETER_UINT32_T
+	ParameterVideoEncodeQpP                                                         // Takes a @ref MMAL_PARAMETER_UINT32_T
+	ParameterVideoEncodeRcSliceDquant                                               // Takes a @ref MMAL_PARAMETER_UINT32_T
+	ParameterVideoEncodeFrameLimitBits                                              // Takes a @ref MMAL_PARAMETER_UINT32_T
+	ParameterVideoEncodePeakRate                                                    // Takes a @ref MMAL_PARAMETER_UINT32_T
+	ParameterVideoEncodeH264DisableCabac                                            // Take a @ref MMAL_PARAMETER_BOOLEAN_T
+	ParameterVideoEncodeH264LowLatency                                              // Take a @ref MMAL_PARAMETER_BOOLEAN_T
+	ParameterVideoEncodeH264AuDelimiters                                            // Take a @ref MMAL_PARAMETER_BOOLEAN_T
+	ParameterVideoEncodeH264DeblockIDC                                              // Takes a @ref MMAL_PARAMETER_UINT32_T
+	ParameterVideoEncodeH264MbIntraMode                                             // Takes a @ref MMAL_PARAMETER_VIDEO_ENCODER_H264_MB_INTRA_MODES_T
+	ParameterVideoEncodeHeaderOnOpen                                                // Takes a @ref MMAL_PARAMETER_BOOLEAN_T
+	ParameterVideoEncodePrecodeForQp                                                // Takes a @ref MMAL_PARAMETER_BOOLEAN_T
+	ParameterVideoDRMInitInfo                                                       // Takes a @ref MMAL_PARAMETER_VIDEO_DRM_INIT_INFO_T
+	ParameterVideoTimestampFifo                                                     // Takes a @ref MMAL_PARAMETER_BOOLEAN_T
+	ParameterVideoDecodeErrorConcealment                                            // Takes a @ref MMAL_PARAMETER_BOOLEAN_T
+	ParameterVideoDRMProtectBuffer                                                  // Takes a @ref MMAL_PARAMETER_VIDEO_DRM_PROTECT_BUFFER_T
+	ParameterVideoDecodeConfigVD3                                                   // Takes a @ref MMAL_PARAMETER_BYTES_T
+	ParameterVideoEncodeH264VCLHRDParameters                                        // Take a @ref MMAL_PARAMETER_BOOLEAN_T
+	ParameterVideoEncodeH264LowDelayHRDFlag                                         // Take a @ref MMAL_PARAMETER_BOOLEAN_T
+	ParameterVideoEncodeInLineHeader                                                // Take a @ref MMAL_PARAMETER_BOOLEAN_T
+	ParameterVideoEncodeSeiEnable                                                   // Take a @ref MMAL_PARAMETER_BOOLEAN_T
+	ParameterVideoEncodeInlineVectors                                               // Take a @ref MMAL_PARAMETER_BOOLEAN_T
+	ParameterVideoRenderStats                                                       // Take a @ref MMAL_PARAMETER_VIDEO_RENDER_STATS_T
+	ParameterVideoInterlaceType                                                     // Take a @ref MMAL_PARAMETER_VIDEO_INTERLACE_TYPE_T
+	ParameterVideoInterpolateTimestamps                                             // Takes a @ref MMAL_PARAMETER_BOOLEAN_T
+	ParameterVideoEncodeSPSTiming                                                   // Take a @ref MMAL_PARAMETER_BOOLEAN_T
+	ParameterVideoMaxNumCallbacks                                                   // Take a @ref MMAL_PARAMETER_UINT32_T
+	ParameterVideoSourcePattern                                                     // Take a @ref MMAL_PARAMETER_SOURCE_PATTERN_T
 )
 
 type Displaytransform C.MMAL_DISPLAYTRANSFORM_T
