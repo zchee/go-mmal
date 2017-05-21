@@ -18,6 +18,7 @@ func ToString(s interface{}) string {
 	return fmt.Sprint(s)
 }
 
+// TODO(zchee): implements
 func CountOf(x unsafe.Pointer) interface{} { return nil }
 
 func FourCC(a, b, c, d rune) int {
