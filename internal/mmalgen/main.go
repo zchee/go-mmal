@@ -1,0 +1,186 @@
+// Copyright 2017 The go-mmal Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package main
+
+import (
+	"bytes"
+	"fmt"
+	"io"
+	"os"
+	"strings"
+
+	"github.com/go-clang/v3.9/clang"
+)
+
+const (
+	prefix = "MMAL"
+)
+
+var builtinTypes = map[string]string{
+	"int8_t":   "int32",
+	"int16_t":  "int32",
+	"int32_t":  "int32",
+	"int64_t":  "int64",
+	"uint8_t":  "uint8",
+	"uint16_t": "uint16",
+	"uint32_t": "uint32",
+	"uint64_t": "uint64",
+}
+
+type typeSpeller interface {
+	Spelling() string
+}
+
+var templ = `package ` + strings.ToLower(prefix)
+
+func main() {
+	header := os.Args[1]
+
+	idx := clang.NewIndex(0, 0)
+	defer idx.Dispose()
+
+	tu := idx.ParseTranslationUnit(header, nil, nil, clang.DefaultEditingTranslationUnitOptions()|clang.TranslationUnit_DetailedPreprocessingRecord|clang.TranslationUnit_KeepGoing)
+	defer tu.Dispose()
+
+	var buf bytes.Buffer
+	buf.WriteString(templ + "\n\n")
+
+	seen := make(map[string]bool)
+	firstEnum := false
+	visitor := func(cursor, parent clang.Cursor) clang.ChildVisitResult {
+		spelling := cursor.Spelling()
+
+		if cursor.IsNull() {
+			return clang.ChildVisit_Continue
+		}
+		if file, _, _, _ := cursor.Location().FileLocation(); file.Name() != header {
+			return clang.ChildVisit_Continue
+		}
+
+		switch kind := cursor.Kind(); kind {
+		case clang.Cursor_StructDecl:
+			if seen[cursor.USR()] {
+				return clang.ChildVisit_Continue
+			}
+			buf.WriteString("type " + UpperCase(spelling) + " struct {\n\tc C." + spelling + "\n}\n\n")
+			seen[cursor.USR()] = true
+		case clang.Cursor_TypedefDecl:
+		case clang.Cursor_FieldDecl:
+			if ptype := parent.Spelling(); ptype != "" {
+				var builtin bool
+				var retv string
+				if t, ok := builtinTypes[cursor.Type().Spelling()]; ok {
+					retv = t
+					builtin = true
+				} else {
+					retv = UpperCase(cursor.Type().Spelling())
+				}
+				buf.WriteString("func (" + ReceiverName(ptype) + " " + UpperCase(ptype) + ") " + UpperCase(spelling) + "() " + retv + " {\n")
+				buf.WriteString("\treturn " + retv)
+				if builtin {
+					buf.WriteString("(" + ReceiverName(ptype) + ".c." + spelling + ")\n}\n\n")
+				} else {
+					buf.WriteString("{" + ReceiverName(ptype) + ".c." + spelling + "}\n}\n\n")
+				}
+			}
+		case clang.Cursor_TypeRef:
+			// noting to do
+		case clang.Cursor_EnumDecl:
+			if seen[cursor.USR()] {
+				buf.WriteString(")\n\n")
+				return clang.ChildVisit_Continue
+			}
+			if spelling != "" {
+				buf.WriteString("type " + UpperCase(spelling) + " C." + spelling + "\n\n")
+				firstEnum = true
+			}
+			seen[cursor.USR()] = true
+			buf.WriteString("const (\n")
+		case clang.Cursor_EnumConstantDecl:
+			if firstEnum {
+				buf.WriteString("\t" + UpperCase(spelling) + " " + UpperCase(parent.Spelling()) + " = iota\n")
+				firstEnum = false
+			} else {
+				buf.WriteString("\t" + UpperCase(spelling) + "\n")
+			}
+		case clang.Cursor_IntegerLiteral:
+			if spelling != "0" {
+				fmt.Println(spelling)
+			}
+		case clang.Cursor_MacroDefinition:
+			fmt.Printf("kind: %s, spelling: %s\n", cursor.Kind(), spelling)
+			// WriteConst(&buf, cursor)
+		default:
+			// fmt.Printf("kind: %s, spelling: %s\n", cursor.Kind(), spelling)
+		}
+
+		return clang.ChildVisit_Recurse
+	}
+
+	tu.TranslationUnitCursor().Visit(visitor)
+	fmt.Println(buf.String())
+}
+
+func WriteConst(buf io.Writer, cursor clang.Cursor) {
+	buf.Write([]byte("const " + cursor.Spelling() + " = " + cursor.ResultType().Spelling() + "\n"))
+}
+
+func ReceiverName(s string) string {
+	return string(bytes.ToLower([]byte{TrimLibPrefix(s)[0]}))
+}
+
+func TrimLibPrefix(s string) string {
+	return strings.TrimPrefix(s, prefix+"_")
+}
+
+// LowerCase returns s with the first character lower-cased. LowerCase
+// assumes s is an ASCII-represented string.
+func LowerCase(s string) string {
+	if len(s) == 0 {
+		return s
+	}
+	var buf bytes.Buffer
+	ss := strings.Split(s, "_")
+	for _, n := range ss {
+		if n == prefix {
+			continue
+		}
+		if len(n) == 1 {
+			buf.WriteString(string(n[0] | ' '))
+			continue
+		}
+		buf.WriteString(string(n[0]|' ') + strings.ToLower(n[1:]))
+	}
+	return buf.String()
+	if len(s) == 0 {
+		return s
+	}
+	return buf.String()
+}
+
+// UpperCase returns s with the first character upper-cased. UpperCase
+// assumes s is an ASCII-represented string.
+func UpperCase(s string) string {
+	if len(s) == 0 {
+		return s
+	}
+	var buf bytes.Buffer
+	ss := strings.Split(s, "_")
+	for _, n := range ss {
+		if n == prefix {
+			continue
+		}
+		if len(n) == 1 {
+			if n == "T" {
+				buf.WriteString("Type")
+				continue
+			}
+			buf.WriteString(string(n[0] &^ ' '))
+			continue
+		}
+		buf.WriteString(string(n[0]&^' ') + strings.ToLower(n[1:]))
+	}
+	return buf.String()
+}
