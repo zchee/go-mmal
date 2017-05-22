@@ -21,8 +21,8 @@ const (
 )
 
 var builtinTypes = map[string]string{
-	"int8_t":       "int32",
-	"int16_t":      "int32",
+	"int8_t":       "int8",
+	"int16_t":      "int16",
 	"int32_t":      "int32",
 	"int64_t":      "int64",
 	"uint8_t":      "uint8",
