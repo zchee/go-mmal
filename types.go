@@ -35,6 +35,15 @@ type Rect struct {
 	c C.MMAL_RECT_T
 }
 
+func NewRect(x, y, width, height int32) Rect {
+	var rect C.MMAL_RECT_T
+	rect.x = C.int32_t(x)
+	rect.y = C.int32_t(y)
+	rect.width = C.int32_t(width)
+	rect.height = C.int32_t(height)
+	return Rect{rect}
+}
+
 func (r Rect) X() int32 {
 	return int32(r.c.x)
 }
