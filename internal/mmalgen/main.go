@@ -30,10 +30,6 @@ var builtinTypes = map[string]string{
 	"unsigned int": "uint",
 }
 
-type typeSpeller interface {
-	Spelling() string
-}
-
 var templ = `package ` + strings.ToLower(prefix)
 
 func main() {
