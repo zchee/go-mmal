@@ -147,7 +147,7 @@ func main() {
 			// fmt.Printf("kind: %s, spelling: %s\n", cursor.Kind(), spelling)
 			// WriteConst(&buf, cursor)
 		default:
-			// fmt.Printf("kind: %s, spelling: %s\n", cursor.Kind(), spelling)
+			fmt.Printf("kind: %s, spelling: %s\n", cursor.Kind(), spelling)
 		}
 
 		return clang.ChildVisit_Recurse
