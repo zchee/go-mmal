@@ -19,6 +19,10 @@ const (
 )
 
 var builtinTypes = map[string]string{
+	"char":         "string",
+	"const char":   "string",
+	"const char *": "string",
+	"void":         "unsafe.Pointer",
 	"int8_t":       "int8",
 	"int16_t":      "int16",
 	"int32_t":      "int32",
@@ -215,6 +219,9 @@ func UpperCase(s string) string {
 		return v
 	}
 	var buf bytes.Buffer
+	if strings.Contains(s, " *") {
+		s = strings.Replace(s, " *", "", 1)
+	}
 	ss := strings.Split(s, "_")
 	for _, n := range ss {
 		if n == prefix || n == strings.ToLower(prefix) {
