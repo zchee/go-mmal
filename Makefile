@@ -9,7 +9,7 @@ scp:
 
 copy:
 	@rm -rf $(shell go env GOPATH)/pkg/darwin_amd64/github.com/zchee/go-mmal*
-	@scp -r pi@raspberrypi.local:/home/pi/go/pkg/linux_arm/github.com/zchee/go-mmal $(shell go env GOPATH)/pkg/darwin_amd64/github.com/zchee
+	@scp -r pi@raspberrypi.local:/home/pi/go/pkg/linux_arm/github.com/zchee/go-mmal.a $(shell go env GOPATH)/pkg/darwin_amd64/github.com/zchee
 
 debug:
 	@go install ./internal/cmd/mmalgen
