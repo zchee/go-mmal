@@ -4,16 +4,20 @@
 
 package mmal
 
+/*
+#include <interface/mmal/mmal.h>
+*/
+import "C"
+
 const (
-	// VersionMajor Major version number.
+	// VersionMajor libmmal major version number.
 	// This changes when the API breaks in a way which is not backward compatible.
-	VersionMajor = 0
-	// VersionMinor Minor version number.
-	// This changes each time the API is extended in a way which is still source and
-	// binary compatible.
-	VersionMinor = 0
-	// Version version number.
-	Version = VersionMajor<<16 | VersionMinor
+	VersionMajor = C.MMAL_VERSION_MAJOR
+	// VersionMinor libmmal minor version number.
+	// This changes each time the API is extended in a way which is still source and binary compatible.
+	VersionMinor = C.MMAL_VERSION_MINOR
+	// Version libmmal version number.
+	Version = C.MMAL_VERSION
 )
 
 // VersionToMajor returns major mmal version from a.
