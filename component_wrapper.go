@@ -14,11 +14,11 @@ import (
 )
 
 type WrapperType struct {
-	c C.MMAL_WRAPPER_T
+	c *C.MMAL_WRAPPER_T
 }
 
 type WrapperCallbackType struct {
-	c C.MMAL_WRAPPER_CALLBACK_T
+	c *C.MMAL_WRAPPER_CALLBACK_T
 }
 
 func (w WrapperType) UserData() unsafe.Pointer {
@@ -26,7 +26,7 @@ func (w WrapperType) UserData() unsafe.Pointer {
 }
 
 func (w WrapperType) Callback() WrapperCallbackType {
-	return WrapperCallbackType{w.c.callback}
+	return WrapperCallbackType{&w.c.callback}
 }
 
 func (w WrapperType) Component() ComponentType {
@@ -38,7 +38,7 @@ func (w WrapperType) Status() Status {
 }
 
 func (w WrapperType) Control() Port {
-	return Port{*w.c.control}
+	return Port{w.c.control}
 }
 
 func (w WrapperType) InputNum() uint32 {
@@ -46,7 +46,7 @@ func (w WrapperType) InputNum() uint32 {
 }
 
 func (w WrapperType) Input() Port {
-	return Port{*(*w.c.input)}
+	return Port{*w.c.input}
 }
 
 func (w WrapperType) InputPool() PoolType {
@@ -58,7 +58,7 @@ func (w WrapperType) OutputNum() uint32 {
 }
 
 func (w WrapperType) Output() Port {
-	return Port{*(*w.c.output)}
+	return Port{*w.c.output}
 }
 
 func (w WrapperType) OutputPool() PoolType {
@@ -81,12 +81,10 @@ func (w WrapperType) TimeDisable() int64 {
 	return int64(w.c.time_disable)
 }
 
-func WrapperCreate(wrapper WrapperType, name string) Status {
+func WrapperCreate(wrapper *WrapperType, name string) Status {
 	n := C.CString(name)
-	defer C.free(unsafe.Pointer(&n))
-	// possibility (**C.MMAL_WRAPPER_T)(unsafe.Pointer(&wrapper.c))?
-	w := &wrapper.c
-	return Status(C.mmal_wrapper_create(&w, n))
+	defer C.free(unsafe.Pointer(n))
+	return Status(C.mmal_wrapper_create((**C.MMAL_WRAPPER_T)(&wrapper.c), n))
 }
 
 const (
@@ -98,20 +96,20 @@ const (
 	WrapperFlagPayloadUseSharedMemory
 )
 
-func WrapperPortEnable(port Port, flags uint32) Status {
-	return Status(C.mmal_wrapper_port_enable(&port.c, C.uint32_t(flags)))
+func WrapperPortEnable(port *Port, flags uint32) Status {
+	return Status(C.mmal_wrapper_port_enable((*C.MMAL_PORT_T)(unsafe.Pointer(&port.c)), C.uint32_t(flags)))
 }
 
-func WrapperPortDisable(port Port) Status {
-	return Status(C.mmal_wrapper_port_disable(&port.c))
+func WrapperPortDisable(port *Port) Status {
+	return Status(C.mmal_wrapper_port_disable((*C.MMAL_PORT_T)(unsafe.Pointer(&port.c))))
 }
 
-func WrapperBufferGetEmpty(port Port, buffer BufferHeader, flags uint32) Status {
-	return Status(C.mmal_wrapper_buffer_get_empty(&port.c, &buffer.c, C.uint32_t(flags)))
+func WrapperBufferGetEmpty(port *Port, buffer *BufferHeader, flags uint32) Status {
+	return Status(C.mmal_wrapper_buffer_get_empty((*C.MMAL_PORT_T)(unsafe.Pointer(&port.c)), (**C.MMAL_BUFFER_HEADER_T)(unsafe.Pointer(&buffer.c)), C.uint32_t(flags)))
 }
 
-func WrapperBufferGetFull(port Port, buffer BufferHeader, flags uint32) Status {
-	return Status(C.mmal_wrapper_buffer_get_full(&port.c, &buffer.c, C.uint32_t(flags)))
+func WrapperBufferGetFull(port *Port, buffer *BufferHeader, flags uint32) Status {
+	return Status(C.mmal_wrapper_buffer_get_full((*C.MMAL_PORT_T)(unsafe.Pointer(&port.c)), (**C.MMAL_BUFFER_HEADER_T)(unsafe.Pointer(&buffer.c)), C.uint32_t(flags)))
 }
 
 // TODO(zchee): mmal_wrapper_cancel does not appear to be in libmmal.so
@@ -119,6 +117,6 @@ func WrapperBufferGetFull(port Port, buffer BufferHeader, flags uint32) Status {
 // 	return Status(C.mmal_wrapper_cancel(&wrapper.c))
 // }
 
-func WrapperDestroy(wrapper WrapperType) Status {
-	return Status(C.mmal_wrapper_destroy(&wrapper.c))
+func WrapperDestroy(wrapper *WrapperType) Status {
+	return Status(C.mmal_wrapper_destroy(wrapper.c))
 }

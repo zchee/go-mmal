@@ -35,9 +35,9 @@ func PortTypeToString(typ PortType) string {
 	return C.GoString(C.mmal_port_type_to_string(C.MMAL_PORT_TYPE_T(typ)))
 }
 
-func PortParameterAllocGet(port Port, id, size uint32, status Status) ParameterHeader {
+func PortParameterAllocGet(port *Port, id, size uint32, status Status) ParameterHeader {
 	s := C.MMAL_STATUS_T(status)
-	return ParameterHeader{*C.mmal_port_parameter_alloc_get(&port.c, C.uint32_t(id), C.uint32_t(size), &s)}
+	return ParameterHeader{*C.mmal_port_parameter_alloc_get(port.c, C.uint32_t(id), C.uint32_t(size), &s)}
 }
 
 func PortParameterFree(param ParameterHeader) {
@@ -48,16 +48,16 @@ func BufferHeaderCopyHeader(dest, src BufferHeader) {
 	C.mmal_buffer_header_copy_header(dest.c, src.c)
 }
 
-func PortPoolCreate(port Port, headers uint, payloadSize uint32) PoolType {
-	return PoolType{C.mmal_port_pool_create(&port.c, C.uint(headers), C.uint32_t(payloadSize))}
+func PortPoolCreate(port *Port, headers uint, payloadSize uint32) PoolType {
+	return PoolType{C.mmal_port_pool_create(port.c, C.uint(headers), C.uint32_t(payloadSize))}
 }
 
-func PortPoolDestroy(port Port, pool PoolType) {
-	C.mmal_port_pool_destroy(&port.c, pool.c)
+func PortPoolDestroy(port *Port, pool PoolType) {
+	C.mmal_port_pool_destroy(port.c, pool.c)
 }
 
-func LogDumpPort(port Port) {
-	C.mmal_log_dump_port(&port.c)
+func LogDumpPort(port *Port) {
+	C.mmal_log_dump_port(port.c)
 }
 
 func LogDumpFormat(format EsFormat) {
@@ -66,7 +66,7 @@ func LogDumpFormat(format EsFormat) {
 
 func UtilGetPort(comp ComponentType, typ PortType, index uint) Port {
 	port := C.mmal_util_get_port(comp.c, C.MMAL_PORT_TYPE_T(typ), C.uint(index))
-	return Port{*port}
+	return Port{port}
 }
 
 func FourccToString(buf string, len int, fourcc uint32) string {
@@ -75,6 +75,6 @@ func FourccToString(buf string, len int, fourcc uint32) string {
 	return C.GoString(C.mmal_4cc_to_string(b, C.size_t(len), C.uint32_t(fourcc)))
 }
 
-func UtilRgbOrderFixed(port Port) int {
-	return int(C.mmal_util_rgb_order_fixed(&port.c))
+func UtilRgbOrderFixed(port *Port) int {
+	return int(C.mmal_util_rgb_order_fixed(port.c))
 }

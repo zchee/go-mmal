@@ -25,7 +25,7 @@ const (
 )
 
 type ConnectionType struct {
-	c C.MMAL_CONNECTION_T
+	c *C.MMAL_CONNECTION_T
 }
 
 func (c ConnectionType) UserData() unsafe.Pointer {
@@ -49,11 +49,11 @@ func (c ConnectionType) Flags() uint32 {
 }
 
 func (c ConnectionType) In() Port {
-	return Port{*c.c.in}
+	return Port{c.c.in}
 }
 
 func (c ConnectionType) Out() Port {
-	return Port{*c.c.out}
+	return Port{c.c.out}
 }
 
 func (c ConnectionType) Pool() PoolType {
@@ -80,31 +80,30 @@ func (c ConnectionType) TimeDisable() int64 {
 	return int64(c.c.time_disable)
 }
 
-func ConnectionCreate(connection ConnectionType, out, in Port, flags uint32) Status {
-	conn := &connection.c
-	return Status(C.mmal_connection_create(&conn, &out.c, &in.c, C.uint32_t(flags)))
+func ConnectionCreate(connection *ConnectionType, out, in Port, flags uint32) Status {
+	return Status(C.mmal_connection_create(&connection.c, out.c, in.c, C.uint32_t(flags)))
 }
 
 func ConnectionAcquire(connection ConnectionType) {
-	C.mmal_connection_acquire(&connection.c)
+	C.mmal_connection_acquire(connection.c)
 }
 
-func ConnectionRelease(connection ConnectionType) Status {
-	return Status(C.mmal_connection_release(&connection.c))
+func ConnectionRelease(connection *ConnectionType) Status {
+	return Status(C.mmal_connection_release(connection.c))
 }
 
-func ConnectionDestroy(connection ConnectionType) Status {
-	return Status(C.mmal_connection_destroy(&connection.c))
+func ConnectionDestroy(connection *ConnectionType) Status {
+	return Status(C.mmal_connection_destroy(connection.c))
 }
 
-func ConnectionEnable(connection ConnectionType) Status {
-	return Status(C.mmal_connection_enable(&connection.c))
+func ConnectionEnable(connection *ConnectionType) Status {
+	return Status(C.mmal_connection_enable(connection.c))
 }
 
-func ConnectionDisable(connection ConnectionType) Status {
-	return Status(C.mmal_connection_disable(&connection.c))
+func ConnectionDisable(connection *ConnectionType) Status {
+	return Status(C.mmal_connection_disable(connection.c))
 }
 
-func ConnectionEventFormatChanged(connection ConnectionType, buffer BufferHeader) Status {
-	return Status(C.mmal_connection_event_format_changed(&connection.c, buffer.c))
+func ConnectionEventFormatChanged(connection *ConnectionType, buffer *BufferHeader) Status {
+	return Status(C.mmal_connection_event_format_changed(connection.c, buffer.c))
 }

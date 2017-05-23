@@ -28,7 +28,7 @@ const (
 )
 
 type Port struct {
-	c C.MMAL_PORT_T
+	c *C.MMAL_PORT_T
 }
 
 // TODO(zchee): implements
@@ -103,50 +103,50 @@ func (p Port) Capabilities() uint32 {
 	return uint32(p.c.capabilities)
 }
 
-func PortFormatCommit(port Port) Status {
-	return Status(C.mmal_port_format_commit(&port.c))
+func PortFormatCommit(port *Port) Status {
+	return Status(C.mmal_port_format_commit(port.c))
 }
 
 type PortBHCBType C.MMAL_PORT_BH_CB_T
 
 func PortEnable(port Port, cb PortBHCBType) Status {
-	return Status(C.mmal_port_enable(&port.c, cb))
+	return Status(C.mmal_port_enable(port.c, cb))
 }
 
-func PortDisable(port Port) Status {
-	return Status(C.mmal_port_disable(&port.c))
+func PortDisable(port *Port) Status {
+	return Status(C.mmal_port_disable(port.c))
 }
 
-func PortFlush(port Port) Status {
-	return Status(C.mmal_port_flush(&port.c))
+func PortFlush(port *Port) Status {
+	return Status(C.mmal_port_flush(port.c))
 }
 
-func PortParameterSet(port Port, param ParameterHeader) Status {
-	return Status(C.mmal_port_parameter_set(&port.c, &param.c))
+func PortParameterSet(port *Port, param ParameterHeader) Status {
+	return Status(C.mmal_port_parameter_set(port.c, &param.c))
 }
 
-func PortParameterGet(port Port, param ParameterHeader) Status {
-	return Status(C.mmal_port_parameter_get(&port.c, &param.c))
+func PortParameterGet(port *Port, param ParameterHeader) Status {
+	return Status(C.mmal_port_parameter_get(port.c, &param.c))
 }
 
-func PortSendBuffer(port Port, buffer BufferHeader) Status {
-	return Status(C.mmal_port_send_buffer(&port.c, buffer.c))
+func PortSendBuffer(port *Port, buffer BufferHeader) Status {
+	return Status(C.mmal_port_send_buffer(port.c, buffer.c))
 }
 
-func PortConnect(port, otherPort Port) Status {
-	return Status(C.mmal_port_connect(&port.c, &otherPort.c))
+func PortConnect(port, otherPort *Port) Status {
+	return Status(C.mmal_port_connect(port.c, otherPort.c))
 }
 
-func PortDisconnect(port Port) Status {
-	return Status(C.mmal_port_disconnect(&port.c))
+func PortDisconnect(port *Port) Status {
+	return Status(C.mmal_port_disconnect(port.c))
 }
 
 // TODO(zchee): return type (*C.uint8)
-func PortPayloadAlloc(port Port, payloadSize uint32) unsafe.Pointer {
-	res := C.mmal_port_payload_alloc(&port.c, C.uint32_t(payloadSize))
+func PortPayloadAlloc(port *Port, payloadSize uint32) unsafe.Pointer {
+	res := C.mmal_port_payload_alloc(port.c, C.uint32_t(payloadSize))
 	return unsafe.Pointer(res)
 }
 
-func PortEventGet(port Port, buffer *BufferHeader, event uint32) Status {
-	return Status(C.mmal_port_event_get(&port.c, &buffer.c, C.uint32_t(event)))
+func PortEventGet(port *Port, buffer *BufferHeader, event uint32) Status {
+	return Status(C.mmal_port_event_get(port.c, &buffer.c, C.uint32_t(event)))
 }
