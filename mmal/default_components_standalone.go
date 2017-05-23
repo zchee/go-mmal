@@ -4,7 +4,7 @@
 
 // +build standalone
 
-package mmalutil
+package mmal
 
 const (
 	ComponentDefaultVideoDecoder   = "avcodec.video_decode"

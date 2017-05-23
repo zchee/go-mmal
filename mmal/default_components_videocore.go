@@ -4,7 +4,7 @@
 
 // +build videocore
 
-package mmalutil
+package mmal
 
 const (
 	ComponentDefaultVideoDecoder   = "ril.video_decode"
