@@ -12,6 +12,9 @@ import (
 	"unsafe"
 )
 
+// TODO(zchee): implements
+// #define MMAL_OFFSET(TYPE, FIELD) ((size_t)((uint8_t *)&((TYPE*)0)->FIELD - (uint8_t *)0))
+
 func StatusToString(status Status) string {
 	return C.GoString(C.mmal_status_to_string(C.MMAL_STATUS_T(status)))
 }
