@@ -34,16 +34,36 @@ var (
 	True  = 1
 )
 
-type CoreStatistics struct {
-	BufferCount     uint32
-	FirstBufferTime uint32
-	LastBufferTime  uint32
-	MaxDelay        uint32
+type CoreStatisticsType struct {
+	c C.MMAL_CORE_STATISTICS_T
 }
 
-type CorePortStatistics struct {
-	RX CoreStatistics
-	TX CoreStatistics
+func (c CoreStatisticsType) BufferCount() uint32 {
+	return uint32(c.c.buffer_count)
+}
+
+func (c CoreStatisticsType) FirstBufferTime() uint32 {
+	return uint32(c.c.first_buffer_time)
+}
+
+func (c CoreStatisticsType) LastBufferTime() uint32 {
+	return uint32(c.c.last_buffer_time)
+}
+
+func (c CoreStatisticsType) MaxDelay() uint32 {
+	return uint32(c.c.max_delay)
+}
+
+type CorePortStatisticsType struct {
+	c C.MMAL_CORE_PORT_STATISTICS_T
+}
+
+func (c CorePortStatisticsType) RX() CoreStatisticsType {
+	return CoreStatisticsType{c.c.rx}
+}
+
+func (c CorePortStatisticsType) TX() CoreStatisticsType {
+	return CoreStatisticsType{c.c.tx}
 }
 
 type Fixed1616 uint32
