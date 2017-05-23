@@ -9,7 +9,7 @@ package mmal
 const (
 	ComponentDefaultVideoDecoder   = "ril.video_decode"
 	ComponentDefaultVideoEncoder   = "ril.video_encode"
-	ComponentDefaultVideoRendereu  = "ril.video_render"
+	ComponentDefaultVideoRenderer  = "ril.video_render"
 	ComponentDefaultImageDecoder   = "ril.image_decode"
 	ComponentDefaultImageEncoder   = "ril.image_encode"
 	ComponentDefaultCamera         = "ril.camera"

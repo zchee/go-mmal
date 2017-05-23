@@ -9,7 +9,7 @@ package mmal
 const (
 	ComponentDefaultVideoDecoder   = "avcodec.video_decode"
 	ComponentDefaultVideoEncoder   = "avcodec.video_encode"
-	ComponentDefaultVideoRendereu  = "sdl.video_render"
+	ComponentDefaultVideoRenderer  = "sdl.video_render"
 	ComponentDefaultImageDecoder   = "avcodec.video_decode"
 	ComponentDefaultImageEncoder   = "avcodec.video_encode"
 	ComponentDefaultCamera         = "artificial_camera"
