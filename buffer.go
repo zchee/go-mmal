@@ -156,8 +156,11 @@ func BufferHeaderReleseContinue(header BufferHeader) {
 	C.mmal_buffer_header_release_continue(header.c)
 }
 
-// TODO(zchee): implements
-// func BufferHeaderPreReleaseCBSet(header BufferHeader, cb ) {}
+type BHPreReleaseCB C.MMAL_BH_PRE_RELEASE_CB_T
+
+func BufferHeaderPreReleaseCBSet(header *BufferHeader, cb BHPreReleaseCB, userdata unsafe.Pointer) {
+	C.mmal_buffer_header_pre_release_cb_set(header.c, cb, userdata)
+}
 
 func BufferHeaderReplicate(dest, src BufferHeader) Status {
 	return Status(C.mmal_buffer_header_replicate(dest.c, src.c))
