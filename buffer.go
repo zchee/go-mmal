@@ -94,33 +94,33 @@ func (b BufferHeader) UserData() unsafe.Pointer {
 
 const (
 	// Signals that the current payload is the end of the stream of data
-	BufferHeaderFlagEos = 1 << 0
+	BufferHeaderFlagEos = 1 << iota
 	// Signals that the start of the current payload starts a frame
-	BufferHeaderFlagFrameStart = 1 << 1
+	BufferHeaderFlagFrameStart
 	// Signals that the end of the current payload ends a frame
-	BufferHeaderFlagFrameEnd = 1 << 2
+	BufferHeaderFlagFrameEnd
 	// Signals that the current payload contains only complete frames = 1 or more
 	BufferHeaderFlagFrame = BufferHeaderFlagFrameStart | BufferHeaderFlagFrameEnd
 	// Signals that the current payload is a keyframe = i.e. self decodable
-	BufferHeaderFlagKeyframe = 1 << 3
+	BufferHeaderFlagKeyframe
 	// Signals a discontinuity in the stream of data = e.g. after a seek.
 	// Can be used for instance by a decoder to reset its state
-	BufferHeaderFlagDiscontinuity = 1 << 4
+	BufferHeaderFlagDiscontinuity
 	// Signals a buffer containing some kind of config data for the component
 	// = e.g. codec config data
-	BufferHeaderFlagConfig = 1 << 5
+	BufferHeaderFlagConfig
 	// Signals an encrypted payload
-	BufferHeaderFlagEncrypted = 1 << 6
+	BufferHeaderFlagEncrypted
 	// Signals a buffer containing side information
-	BufferHeaderFlagCodecsideinfo = 1 << 7
+	BufferHeaderFlagCodecsideinfo
 	// Signals a buffer which is the snapshot/postview image from a stills capture
-	BUFFER_HEADER_FlagsSnapshot = 1 << 8
+	BUFFER_HEADER_FlagsSnapshot
 	// Signals a buffer which contains data known to be corrupted
-	BufferHeaderFlagCorrupted = 1 << 9
+	BufferHeaderFlagCorrupted
 	// Signals that a buffer failed to be transmitted
-	BufferHeaderFlagTransmission_failed = 1 << 10
+	BufferHeaderFlagTransmission_failed
 	// Signals the output buffer won't be used, just update reference frames
-	BufferHeaderFlagDecodeonly = 1 << 11
+	BufferHeaderFlagDecodeonly
 	// User flags - can be passed in and will get returned
 	BufferHeaderFlagUser0 = 1 << 28
 	BufferHeaderFlagUser1 = 1 << 29
@@ -131,13 +131,13 @@ const (
 const (
 	BufferHeaderFlagFormatSpecificStart = 1 << 16
 	// Signals an interlaced video frame.
-	BufferHeaderVideoFlagInterlaced = BufferHeaderFlagFormatSpecificStart << 0
+	BufferHeaderVideoFlagInterlaced = BufferHeaderFlagFormatSpecificStart << iota
 	// Signals that the top field of the current interlaced frame should be displayed first.
-	BufferHeaderVideoFlagTopFieldFirst = BufferHeaderFlagFormatSpecificStart << 1
+	BufferHeaderVideoFlagTopFieldFirst = BufferHeaderFlagFormatSpecificStart
 	// Signals that the buffer should be displayed on external display if attached.
-	BufferHeaderVideoFlagDisplayExternal = BufferHeaderFlagFormatSpecificStart << 3
+	BufferHeaderVideoFlagDisplayExternal = BufferHeaderFlagFormatSpecificStart
 	// Signals that contents of the buffer requires copy protection.
-	BufferHeaderVideoFlagProtected = BufferHeaderFlagFormatSpecificStart << 4
+	BufferHeaderVideoFlagProtected = BufferHeaderFlagFormatSpecificStart
 )
 
 func BufferHeaderAcquire(header BufferHeader) {
