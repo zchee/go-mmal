@@ -4,7 +4,7 @@
 //
 // Copyright (c) 2017 Sugizaki Yukimasa (ysugi@idein.jp)
 // All rights reserved.
-// 
+//
 // This software is licensed under a Modified (3-Clause) BSD License.
 // You should have received a copy of this license along with this
 // software. If not, contact the copyright holder above.
@@ -24,6 +24,7 @@ import (
 	"unsafe"
 
 	mmal "github.com/zchee/go-mmal"
+	"github.com/zchee/go-mmal/bcmhost"
 )
 
 const CameraNum = 0
@@ -46,7 +47,7 @@ var (
 func main() {
 	flag.Parse()
 
-	mmal.BCMHostInit()
+	bcmhost.Init()
 
 	// create camera and video_render component
 	var cpCamera mmal.WrapperType
@@ -67,7 +68,7 @@ func main() {
 	// preview port of camera
 	output := cpCamera.Output()
 	mmal.SetPortFormat(&output)
-	
+
 	// TODO(zchee): omit set port parameter for now
 	// set fps
 	// mmal_port_parameter_set(output, &preview_fps_range.hdr)
@@ -95,7 +96,7 @@ func main() {
 		mmal.WrapperDestroy(&cpVideoRenderor)
 		// TODO(zchee): occur "double free or corruption" error if destroy. Because already cleanuped from Go garbage collection?
 		// mmal.WrapperDestroy(&cpCamera)
-		mmal.BCMHostDeinit()
+		bcmhost.Deinit()
 	}
 
 	sig := make(chan os.Signal, 1)
