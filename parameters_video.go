@@ -115,6 +115,18 @@ type Displayregion struct {
 	c C.MMAL_DISPLAYREGION_T
 }
 
+func NewDisplayregion(header *ParameterHeader, set uint32, fullscreen bool, previewDestRect Rect) Displayregion {
+	var c C.MMAL_DISPLAYREGION_T
+	c.hdr = header.c
+	c.set = C.uint32_t(set)
+	c.fullscreen = 0
+	if fullscreen {
+		c.fullscreen = 1
+	}
+	c.dest_rect = previewDestRect.c
+	return Displayregion{c}
+}
+
 func (d Displayregion) Hdr() ParameterHeader {
 	return ParameterHeader{d.c.hdr}
 }

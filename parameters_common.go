@@ -47,6 +47,13 @@ type ParameterHeader struct {
 	c C.MMAL_PARAMETER_HEADER_T
 }
 
+func NewParameterHeader(id, size uint32) ParameterHeader {
+	var c C.MMAL_PARAMETER_HEADER_T
+	c.id = C.uint32_t(id)
+	c.size = C.uint32_t(size)
+	return ParameterHeader{c}
+}
+
 func (p ParameterHeader) ID() uint32 {
 	return uint32(p.c.id)
 }
