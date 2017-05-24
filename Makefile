@@ -1,8 +1,19 @@
 install: scp
+	@ssh pi@raspberrypi.local PKG_CONFIG_PATH=/opt/vc/lib/pkgconfig /usr/local/go/bin/go install -x github.com/zchee/go-mmal/cmd/go-picamera-preview
+
+scp:
+	@ssh pi@raspberrypi.local rm -rf /home/pi/go/src/github.com/zchee/go-mmal/cmd
+	@scp -rq $(CURDIR)/cmd pi@raspberrypi.local:/home/pi/go/src/github.com/zchee/go-mmal
+	@ssh pi@raspberrypi.local /usr/local/go/bin/go get -d github.com/zchee/go-mmal/cmd/go-picamera-preview
+
+run: install
+	@ssh pi@raspberrypi.local GODEBUG=cgocheck=0 /home/pi/go/bin/go-picamera-preview
+
+install/lib: scp/lib
 	@ssh pi@raspberrypi.local PKG_CONFIG_PATH=/opt/vc/lib/pkgconfig /usr/local/go/bin/go install -x github.com/zchee/go-mmal
 	${MAKE} copy
 
-scp:
+scp/lib:
 	@ssh pi@raspberrypi.local mkdir -p /home/pi/go/src/github.com/zchee/go-mmal
 	@ssh pi@raspberrypi.local rm -rf /home/pi/go/src/github.com/zchee/go-mmal/*.go
 	@scp -q $(shell find . -maxdepth 1 -name '*.go' -and -not -name '_*') pi@raspberrypi.local:/home/pi/go/src/github.com/zchee/go-mmal
