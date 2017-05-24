@@ -12,7 +12,7 @@ import "C"
 import "unsafe"
 
 type BufferHeaderVideoSpecific struct {
-	c C.MMAL_BUFFER_HEADER_VIDEO_SPECIFIC_T
+	c *C.MMAL_BUFFER_HEADER_VIDEO_SPECIFIC_T
 }
 
 func (b BufferHeaderVideoSpecific) Planes() uint32 {
