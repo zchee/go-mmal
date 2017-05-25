@@ -49,8 +49,9 @@ func (b BufferHeader) Next() BufferHeader {
 	return BufferHeader{b.c.next}
 }
 
-// TODO(zchee): implements
-func (b BufferHeader) Priv() {}
+func (b BufferHeader) Priv() BufferHeaderPrivateType {
+	return BufferHeaderPrivateType{b.c.priv}
+}
 
 func (b BufferHeader) Cmd() uint32 {
 	return uint32(b.c.cmd)
