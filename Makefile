@@ -25,3 +25,6 @@ copy:
 debug:
 	@go install ./internal/cmd/mmalgen
 	@mmalgen ~/src/github.com/raspberrypi/userland/interface/mmal/util/mmal_util_params.h
+
+todo:
+	@pt TODO --after=1 --ignore Makefile
