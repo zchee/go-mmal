@@ -86,10 +86,9 @@ func (p Port) BufferSize() uint32 {
 	return uint32(p.c.buffer_size)
 }
 
-// TODO(zchee): wait for implements Component type
-// func (p Port) Component() Component {
-// 	return Component{p.c.component}
-// }
+func (p Port) Component() ComponentType {
+	return ComponentType{p.c.component}
+}
 
 type PortUserdataType struct {
 	c *C.struct_MMAL_PORT_USERDATA_T
