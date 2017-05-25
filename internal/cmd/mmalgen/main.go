@@ -86,7 +86,7 @@ func main() {
 				numArgs := cursor.NumArguments()
 				for i := uint32(0); i < uint32(numArgs); i++ {
 					fmt.Println(cursor.Argument(i).Type().Spelling())
-					buf.WriteString(fmt.Sprintf("%s %s", cursor.Argument(i).Spelling(), formatType(cursor.Argument(i).Type().Spelling())))
+					buf.WriteString(fmt.Sprintf("%s %s", LowerCase(cursor.Argument(i).Spelling()), formatType(cursor.Argument(i).Type().Spelling())))
 					if i+1 < uint32(numArgs) {
 						buf.WriteString(", ")
 					}
@@ -96,7 +96,7 @@ func main() {
 				buf.WriteString(fmt.Sprintf(") %s {\n", resType))
 				buf.WriteString(fmt.Sprintf("\treturn "+resType+"(C."+cursor.Spelling()) + "(")
 				for i := uint32(0); i < uint32(numArgs); i++ {
-					arg := cursor.Argument(i).Spelling()
+					arg := LowerCase(cursor.Argument(i).Spelling())
 					switch arg {
 					case "port":
 						arg = "port.c"
@@ -211,10 +211,18 @@ func LowerCase(s string) string {
 			continue
 		}
 		if len(n) == 1 {
+			if buf.Len() == 0 {
+				buf.WriteString(string(n[0] &^ ' '))
+				continue
+			}
 			buf.WriteString(string(n[0] | ' '))
 			continue
 		}
-		buf.WriteString(string(n[0]|' ') + strings.ToLower(n[1:]))
+		if buf.Len() == 0 {
+			buf.WriteString(string(n[0]|' ') + strings.ToLower(n[1:]))
+			continue
+		}
+		buf.WriteString(string(n[0]&^' ') + strings.ToLower(n[1:]))
 	}
 	return buf.String()
 	if len(s) == 0 {
