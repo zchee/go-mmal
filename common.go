@@ -11,7 +11,6 @@ import "C"
 
 import (
 	"fmt"
-	"unsafe"
 )
 
 func ToString(s interface{}) string {
@@ -19,7 +18,7 @@ func ToString(s interface{}) string {
 }
 
 // TODO(zchee): implements
-func CountOf(x unsafe.Pointer) interface{} { return nil }
+// func CountOf(x unsafe.Pointer) interface{} { return nil }
 
 func FourCC(a, b, c, d rune) int {
 	return int(a) | int(b)<<8 | int(c)<<16 | int(d)<<24
