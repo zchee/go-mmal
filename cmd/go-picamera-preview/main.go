@@ -27,17 +27,8 @@ import (
 	"github.com/zchee/go-mmal/bcmhost"
 )
 
-const CameraNum = 0
-
 var (
 	previewDestRect = mmal.NewRect(1024/4, 768/4, 1024/2, 768/4)
-	// TODO(zchee): implements NewParameterFPSRange()
-	// previewFPSRange = mmal.ParameterFPSRange{}
-)
-
-const (
-	previewWidth  = 1024
-	previewHeight = 768
 )
 
 var (
@@ -59,19 +50,9 @@ func main() {
 		log.Fatalf("go-picamera: %v", err)
 	}
 
-	// control port of camera
-	control := cpCamera.Control()
-	prmhdr := mmal.NewParameterHeader(uint32(mmal.ParameterCameraNum), uint32(unsafe.Sizeof(mmal.ParameterInt32Type{})))
-	cameraNum := mmal.NewParameterInt32Type(prmhdr, CameraNum)
-	mmal.PortParameterSet(&control, cameraNum.Hdr())
-
 	// preview port of camera
 	output := cpCamera.Output()
 	mmal.SetPortFormat(&output)
-
-	// TODO(zchee): omit set port parameter for now
-	// set fps
-	// mmal_port_parameter_set(output, &preview_fps_range.hdr)
 
 	// input port of video_renderer
 	input := cpVideoRenderor.Input()
@@ -83,7 +64,9 @@ func main() {
 
 	// create connection between camera's preview and video_renderer
 	var connection mmal.ConnectionType
-	if err := mmal.ConnectionCreate(&connection, cpCamera.Output(), cpVideoRenderor.Input(), mmal.ConnectionFlagTunnelling|mmal.ConnectionFlagAllocationOnInput); err != mmal.Success {
+	cameraOutput := cpCamera.Output()
+	videoInput := cpVideoRenderor.Input()
+	if err := mmal.ConnectionCreate(&connection, &cameraOutput, &videoInput, mmal.ConnectionFlagTunnelling|mmal.ConnectionFlagAllocationOnInput); err != mmal.Success {
 		log.Fatalf("go-picamera: %v", err)
 	}
 	// and enable it
