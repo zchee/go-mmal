@@ -20,7 +20,65 @@ type ComponentPrivateType struct {
 	c *C.MMAL_COMPONENT_PRIVATE_T
 }
 
-// TODO(zchee): implements ComponentType methods. error: undefined several C side methods.
+func (c ComponentType) Priv() ComponentPrivateType {
+	return ComponentPrivateType{c.c.priv}
+}
+
+type ComponentUserdataType struct {
+	c *C.struct_MMAL_COMPONENT_USERDATA_T
+}
+
+func (c ComponentType) Userdata() ComponentUserdataType {
+	return ComponentUserdataType{c.c.userdata}
+}
+
+func (c ComponentType) Name() string {
+	return C.GoString(c.c.name)
+}
+
+func (c ComponentType) IsEnabled() uint32 {
+	return uint32(c.c.is_enabled)
+}
+
+func (c ComponentType) Control() Port {
+	return Port{c.c.control}
+}
+
+func (c ComponentType) InputNum() uint32 {
+	return uint32(c.c.input_num)
+}
+
+func (c ComponentType) Input() Port {
+	return Port{*c.c.input}
+}
+
+func (c ComponentType) OutputNum() uint32 {
+	return uint32(c.c.output_num)
+}
+
+func (c ComponentType) Output() Port {
+	return Port{*c.c.output}
+}
+
+func (c ComponentType) ClockNum() uint32 {
+	return uint32(c.c.clock_num)
+}
+
+func (c ComponentType) Clock() Port {
+	return Port{*c.c.clock}
+}
+
+func (c ComponentType) PortNum() uint32 {
+	return uint32(c.c.port_num)
+}
+
+func (c ComponentType) Port() Port {
+	return Port{*c.c.port}
+}
+
+func (c ComponentType) Id() uint32 {
+	return uint32(c.c.id)
+}
 
 func ComponentCreate(name string, component *ComponentType) error {
 	cName := C.CString(name)
