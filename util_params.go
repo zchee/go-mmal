@@ -67,7 +67,7 @@ func PortParameterGetRational(port *Port, id uint32, value *Rational) Status {
 
 func PortParameterSetString(port *Port, id uint32, value string) Status {
 	v := C.CString(value)
-	defer C.free(unsafe.Pointer(&v))
+	defer C.free(unsafe.Pointer(v))
 	return Status(C.mmal_port_parameter_set_string(port.c, C.uint32_t(id), v))
 }
 
@@ -78,7 +78,7 @@ func PortParameterSetBytes(port *Port, id uint32, data uint8, size uint) Status 
 
 func UtilPortSetUri(port *Port, uri string) Status {
 	u := C.CString(uri)
-	defer C.free(unsafe.Pointer(&u))
+	defer C.free(unsafe.Pointer(u))
 	return Status(C.mmal_util_port_set_uri(port.c, u))
 }
 

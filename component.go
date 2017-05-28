@@ -24,7 +24,7 @@ type ComponentPrivateType struct {
 
 func ComponentCreate(name string, component *ComponentType) Status {
 	cName := C.CString(name)
-	defer C.free(unsafe.Pointer(&cName))
+	defer C.free(unsafe.Pointer(cName))
 	return Status(C.mmal_component_create(cName, &component.c))
 }
 
