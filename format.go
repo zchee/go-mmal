@@ -137,11 +137,11 @@ func FormatExtradatAlloc(format EsFormat, size uint) Status {
 	return Status(C.mmal_format_extradata_alloc(format.c, C.uint(size)))
 }
 
-func FormatCopy(formatDest, formatSrc EsFormat) {
+func FormatCopy(formatDest, formatSrc *EsFormat) {
 	C.mmal_format_copy(formatDest.c, formatSrc.c)
 }
 
-func FormatFullCopy(formatDest, formatSrc EsFormat) {
+func FormatFullCopy(formatDest, formatSrc *EsFormat) {
 	C.mmal_format_full_copy(formatDest.c, formatSrc.c)
 }
 
@@ -161,6 +161,6 @@ const (
 	EsFormatCompareFlagEsOther = 0x10000000 /**< Other ES specific parameters are different */
 )
 
-func FormatCompare(format1, format2 EsFormat) C.uint32_t {
+func FormatCompare(format1, format2 *EsFormat) C.uint32_t {
 	return C.mmal_format_compare(format1.c, format2.c)
 }
