@@ -40,7 +40,7 @@ func SetPortFormat(port *Port) {
 	C.set_es_specific_format(&esf)
 	port.c.format.es = &esf
 
-	if err := PortFormatCommit(port); err != Success {
+	if err := PortFormatCommit(port); err != nil {
 		panic(fmt.Sprintf("could not set port format: %v", err))
 	}
 }
