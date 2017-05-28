@@ -146,6 +146,11 @@ func PortPayloadAlloc(port *Port, payloadSize uint32) unsafe.Pointer {
 	return unsafe.Pointer(res)
 }
 
+func PortPayloadFree(port *Port, payload *uint8) {
+	p := C.uint8_t(*payload)
+	C.mmal_port_payload_free(port.c, &p)
+}
+
 func PortEventGet(port *Port, buffer *BufferHeader, event uint32) Status {
 	return Status(C.mmal_port_event_get(port.c, &buffer.c, C.uint32_t(event)))
 }
