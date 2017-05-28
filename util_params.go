@@ -16,9 +16,8 @@ func PortParameterSetBoolean(port *Port, id uint32, value BoolT) Status {
 	return Status(C.mmal_port_parameter_set_boolean(port.c, C.uint32_t(id), C.MMAL_BOOL_T(value)))
 }
 
-func PortParameterGetBoolean(port *Port, id uint32, value BoolT) Status {
-	v := C.MMAL_BOOL_T(value)
-	defer C.free(unsafe.Pointer(&v))
+func PortParameterGetBoolean(port *Port, id uint32, value *BoolT) Status {
+	v := C.MMAL_BOOL_T(*value)
 	return Status(C.mmal_port_parameter_get_boolean(port.c, C.uint32_t(id), &v))
 }
 
@@ -26,8 +25,8 @@ func PortParameterSetUint64(port *Port, id uint32, value uint64) Status {
 	return Status(C.mmal_port_parameter_set_uint64(port.c, C.uint32_t(id), C.uint64_t(value)))
 }
 
-func PortParameterGetUint64(port *Port, id uint32, value uint64) Status {
-	v := C.uint64_t(value)
+func PortParameterGetUint64(port *Port, id uint32, value *uint64) Status {
+	v := C.uint64_t(*value)
 	return Status(C.mmal_port_parameter_get_uint64(port.c, C.uint32_t(id), &v))
 }
 
@@ -35,8 +34,8 @@ func PortParameterSetInt64(port *Port, id uint32, value int64) Status {
 	return Status(C.mmal_port_parameter_set_int64(port.c, C.uint32_t(id), C.int64_t(value)))
 }
 
-func PortParameterGetInt64(port *Port, id uint32, value int64) Status {
-	v := C.int64_t(value)
+func PortParameterGetInt64(port *Port, id uint32, value *int64) Status {
+	v := C.int64_t(*value)
 	return Status(C.mmal_port_parameter_get_int64(port.c, C.uint32_t(id), &v))
 }
 
@@ -44,8 +43,8 @@ func PortParameterSetUint32(port *Port, id uint32, value uint32) Status {
 	return Status(C.mmal_port_parameter_set_uint32(port.c, C.uint32_t(id), C.uint32_t(value)))
 }
 
-func PortParameterGetUint32(port *Port, id uint32, value uint32) Status {
-	v := C.uint32_t(value)
+func PortParameterGetUint32(port *Port, id uint32, value *uint32) Status {
+	v := C.uint32_t(*value)
 	return Status(C.mmal_port_parameter_get_uint32(port.c, C.uint32_t(id), &v))
 }
 
@@ -53,8 +52,8 @@ func PortParameterSetInt32(port *Port, id uint32, value int32) Status {
 	return Status(C.mmal_port_parameter_set_int32(port.c, C.uint32_t(id), C.int32_t(value)))
 }
 
-func PortParameterGetInt32(port *Port, id uint32, value int32) Status {
-	v := C.int32_t(value)
+func PortParameterGetInt32(port *Port, id uint32, value *int32) Status {
+	v := C.int32_t(*value)
 	return Status(C.mmal_port_parameter_get_int32(port.c, C.uint32_t(id), &v))
 }
 
@@ -62,7 +61,7 @@ func PortParameterSetRational(port *Port, id uint32, value Rational) Status {
 	return Status(C.mmal_port_parameter_set_rational(port.c, C.uint32_t(id), C.MMAL_RATIONAL_T(value.c)))
 }
 
-func PortParameterGetRational(port *Port, id uint32, value Rational) Status {
+func PortParameterGetRational(port *Port, id uint32, value *Rational) Status {
 	return Status(C.mmal_port_parameter_get_rational(port.c, C.uint32_t(id), &value.c))
 }
 
@@ -83,7 +82,7 @@ func UtilPortSetUri(port *Port, uri string) Status {
 	return Status(C.mmal_util_port_set_uri(port.c, u))
 }
 
-func UtilSetDisplayRegion(port *Port, region Displayregion) Status {
+func UtilSetDisplayRegion(port *Port, region *Displayregion) Status {
 	return Status(C.mmal_util_set_display_region(port.c, &region.c))
 }
 
