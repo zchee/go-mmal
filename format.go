@@ -133,8 +133,11 @@ func (e EsFormat) Free() {
 	C.mmal_format_free(e.c)
 }
 
-func FormatExtradatAlloc(format EsFormat, size uint) Status {
-	return Status(C.mmal_format_extradata_alloc(format.c, C.uint(size)))
+func FormatExtradatAlloc(format EsFormat, size uint) error {
+	if err := Status(C.mmal_format_extradata_alloc(format.c, C.uint(size))); err != Success {
+		return err
+	}
+	return nil
 }
 
 func FormatCopy(formatDest, formatSrc *EsFormat) {

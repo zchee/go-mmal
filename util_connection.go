@@ -80,30 +80,48 @@ func (c ConnectionType) TimeDisable() int64 {
 	return int64(c.c.time_disable)
 }
 
-func ConnectionCreate(connection *ConnectionType, out, in *Port, flags uint32) Status {
-	return Status(C.mmal_connection_create(&connection.c, out.c, in.c, C.uint32_t(flags)))
+func ConnectionCreate(connection *ConnectionType, out, in *Port, flags uint32) error {
+	if err := Status(C.mmal_connection_create(&connection.c, out.c, in.c, C.uint32_t(flags))); err != Success {
+		return err
+	}
+	return nil
 }
 
 func ConnectionAcquire(connection *ConnectionType) {
 	C.mmal_connection_acquire(connection.c)
 }
 
-func ConnectionRelease(connection *ConnectionType) Status {
-	return Status(C.mmal_connection_release(connection.c))
+func ConnectionRelease(connection *ConnectionType) error {
+	if err := Status(C.mmal_connection_release(connection.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func ConnectionDestroy(connection *ConnectionType) Status {
-	return Status(C.mmal_connection_destroy(connection.c))
+func ConnectionDestroy(connection *ConnectionType) error {
+	if err := Status(C.mmal_connection_destroy(connection.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func ConnectionEnable(connection *ConnectionType) Status {
-	return Status(C.mmal_connection_enable(connection.c))
+func ConnectionEnable(connection *ConnectionType) error {
+	if err := Status(C.mmal_connection_enable(connection.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func ConnectionDisable(connection *ConnectionType) Status {
-	return Status(C.mmal_connection_disable(connection.c))
+func ConnectionDisable(connection *ConnectionType) error {
+	if err := Status(C.mmal_connection_disable(connection.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func ConnectionEventFormatChanged(connection *ConnectionType, buffer *BufferHeader) Status {
-	return Status(C.mmal_connection_event_format_changed(connection.c, buffer.c))
+func ConnectionEventFormatChanged(connection *ConnectionType, buffer *BufferHeader) error {
+	if err := Status(C.mmal_connection_event_format_changed(connection.c, buffer.c)); err != Success {
+		return err
+	}
+	return nil
 }

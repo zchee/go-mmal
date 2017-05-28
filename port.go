@@ -102,42 +102,69 @@ func (p Port) Capabilities() uint32 {
 	return uint32(p.c.capabilities)
 }
 
-func PortFormatCommit(port *Port) Status {
-	return Status(C.mmal_port_format_commit(port.c))
+func PortFormatCommit(port *Port) error {
+	if err := Status(C.mmal_port_format_commit(port.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
 type PortBHCBType C.MMAL_PORT_BH_CB_T
 
-func PortEnable(port Port, cb PortBHCBType) Status {
-	return Status(C.mmal_port_enable(port.c, cb))
+func PortEnable(port Port, cb PortBHCBType) error {
+	if err := Status(C.mmal_port_enable(port.c, cb)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func PortDisable(port *Port) Status {
-	return Status(C.mmal_port_disable(port.c))
+func PortDisable(port *Port) error {
+	if err := Status(C.mmal_port_disable(port.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func PortFlush(port *Port) Status {
-	return Status(C.mmal_port_flush(port.c))
+func PortFlush(port *Port) error {
+	if err := Status(C.mmal_port_flush(port.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func PortParameterSet(port *Port, param ParameterHeader) Status {
-	return Status(C.mmal_port_parameter_set(port.c, &param.c))
+func PortParameterSet(port *Port, param ParameterHeader) error {
+	if err := Status(C.mmal_port_parameter_set(port.c, &param.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func PortParameterGet(port *Port, param ParameterHeader) Status {
-	return Status(C.mmal_port_parameter_get(port.c, &param.c))
+func PortParameterGet(port *Port, param ParameterHeader) error {
+	if err := Status(C.mmal_port_parameter_get(port.c, &param.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func PortSendBuffer(port *Port, buffer BufferHeader) Status {
-	return Status(C.mmal_port_send_buffer(port.c, buffer.c))
+func PortSendBuffer(port *Port, buffer BufferHeader) error {
+	if err := Status(C.mmal_port_send_buffer(port.c, buffer.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func PortConnect(port, otherPort *Port) Status {
-	return Status(C.mmal_port_connect(port.c, otherPort.c))
+func PortConnect(port, otherPort *Port) error {
+	if err := Status(C.mmal_port_connect(port.c, otherPort.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func PortDisconnect(port *Port) Status {
-	return Status(C.mmal_port_disconnect(port.c))
+func PortDisconnect(port *Port) error {
+	if err := Status(C.mmal_port_disconnect(port.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
 // TODO(zchee): return type (*C.uint8)
@@ -151,6 +178,9 @@ func PortPayloadFree(port *Port, payload *uint8) {
 	C.mmal_port_payload_free(port.c, &p)
 }
 
-func PortEventGet(port *Port, buffer *BufferHeader, event uint32) Status {
-	return Status(C.mmal_port_event_get(port.c, &buffer.c, C.uint32_t(event)))
+func PortEventGet(port *Port, buffer *BufferHeader, event uint32) error {
+	if err := Status(C.mmal_port_event_get(port.c, &buffer.c, C.uint32_t(event))); err != Success {
+		return err
+	}
+	return nil
 }

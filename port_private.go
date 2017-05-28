@@ -110,12 +110,18 @@ func PortAcquire(port *Port) {
 	C.mmal_port_acquire(port.c)
 }
 
-func PortRelease(port *Port) Status {
-	return Status(C.mmal_port_release(port.c))
+func PortRelease(port *Port) error {
+	if err := Status(C.mmal_port_release(port.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func PortPause(port *Port, pause BoolT) Status {
-	return Status(C.mmal_port_pause(port.c, C.MMAL_BOOL_T(pause)))
+func PortPause(port *Port, pause BoolT) error {
+	if err := Status(C.mmal_port_pause(port.c, C.MMAL_BOOL_T(pause))); err != Success {
+		return err
+	}
+	return nil
 }
 
 func PortIsConnected(port *Port) bool {
@@ -143,68 +149,104 @@ func PortsClockFree(ports *Port, portsNum uint) {
 
 type PortClockRequestCB C.MMAL_PORT_CLOCK_REQUEST_CB
 
-func PortClockRequestAdd(port *Port, mediaTime int64, cb PortClockRequestCB, cbData unsafe.Pointer) Status {
-	return Status(C.mmal_port_clock_request_add(port.c, C.int64_t(mediaTime), cb, cbData))
+func PortClockRequestAdd(port *Port, mediaTime int64, cb PortClockRequestCB, cbData unsafe.Pointer) error {
+	if err := Status(C.mmal_port_clock_request_add(port.c, C.int64_t(mediaTime), cb, cbData)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func PortClockRequestFlush(port *Port) Status {
-	return Status(C.mmal_port_clock_request_flush(port.c))
+func PortClockRequestFlush(port *Port) error {
+	if err := Status(C.mmal_port_clock_request_flush(port.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func PortClockReferenceSet(port *Port, reference BoolT) Status {
-	return Status(C.mmal_port_clock_reference_set(port.c, C.MMAL_BOOL_T(reference)))
+func PortClockReferenceSet(port *Port, reference BoolT) error {
+	if err := Status(C.mmal_port_clock_reference_set(port.c, C.MMAL_BOOL_T(reference))); err != Success {
+		return err
+	}
+	return nil
 }
 
 func PortClockReferenceGet(port *Port) bool {
 	return BoolT(C.mmal_port_clock_reference_get(port.c)) != BoolT(0)
 }
 
-func PortClockActiveSet(port *Port, active BoolT) Status {
-	return Status(C.mmal_port_clock_active_set(port.c, C.MMAL_BOOL_T(active)))
+func PortClockActiveSet(port *Port, active BoolT) error {
+	if err := Status(C.mmal_port_clock_active_set(port.c, C.MMAL_BOOL_T(active))); err != Success {
+		return err
+	}
+	return nil
 }
 
 func PortClockActiveGet(port *Port) bool {
 	return BoolT(C.mmal_port_clock_active_get(port.c)) != BoolT(0)
 }
 
-func PortClockScaleSet(port *Port, scale Rational) Status {
-	return Status(C.mmal_port_clock_scale_set(port.c, scale.c))
+func PortClockScaleSet(port *Port, scale Rational) error {
+	if err := Status(C.mmal_port_clock_scale_set(port.c, scale.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
 func PortClockScaleGet(port *Port) Rational {
 	return Rational{C.mmal_port_clock_scale_get(port.c)}
 }
 
-func PortClockMediaTimeSet(port *Port, mediaTime int64) Status {
-	return Status(C.mmal_port_clock_media_time_set(port.c, C.int64_t(mediaTime)))
+func PortClockMediaTimeSet(port *Port, mediaTime int64) error {
+	if err := Status(C.mmal_port_clock_media_time_set(port.c, C.int64_t(mediaTime))); err != Success {
+		return err
+	}
+	return nil
 }
 
 func PortClockMediaTimeGet(port *Port) int64 {
 	return int64(C.mmal_port_clock_media_time_get(port.c))
 }
 
-func PortClockUpdateThresholdSet(port *Port, threshold *ClockUpdateThreshold) Status {
-	return Status(C.mmal_port_clock_update_threshold_set(port.c, &threshold.c))
+func PortClockUpdateThresholdSet(port *Port, threshold *ClockUpdateThreshold) error {
+	if err := Status(C.mmal_port_clock_update_threshold_set(port.c, &threshold.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func PortClockUpdateThresholdGet(port *Port, threshold *ClockUpdateThreshold) Status {
-	return Status(C.mmal_port_clock_update_threshold_get(port.c, &threshold.c))
+func PortClockUpdateThresholdGet(port *Port, threshold *ClockUpdateThreshold) error {
+	if err := Status(C.mmal_port_clock_update_threshold_get(port.c, &threshold.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func PortClockDiscontThresholdSet(port *Port, threshold *ClockDiscontThreshold) Status {
-	return Status(C.mmal_port_clock_discont_threshold_set(port.c, &threshold.c))
+func PortClockDiscontThresholdSet(port *Port, threshold *ClockDiscontThreshold) error {
+	if err := Status(C.mmal_port_clock_discont_threshold_set(port.c, &threshold.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func PortClockDiscontThresholdGet(port *Port, threshold *ClockDiscontThreshold) Status {
-	return Status(C.mmal_port_clock_discont_threshold_get(port.c, &threshold.c))
+func PortClockDiscontThresholdGet(port *Port, threshold *ClockDiscontThreshold) error {
+	if err := Status(C.mmal_port_clock_discont_threshold_get(port.c, &threshold.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func PortClockRequestThresholdSet(port *Port, threshold *ClockRequestThreshold) Status {
-	return Status(C.mmal_port_clock_request_threshold_set(port.c, &threshold.c))
+func PortClockRequestThresholdSet(port *Port, threshold *ClockRequestThreshold) error {
+	if err := Status(C.mmal_port_clock_request_threshold_set(port.c, &threshold.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func PortClockRequestThresholdGet(port *Port, threshold *ClockRequestThreshold) Status {
-	return Status(C.mmal_port_clock_request_threshold_get(port.c, &threshold.c))
+func PortClockRequestThresholdGet(port *Port, threshold *ClockRequestThreshold) error {
+	if err := Status(C.mmal_port_clock_request_threshold_get(port.c, &threshold.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
 func PortClockInputBufferInfo(port *Port, info *ClockBufferInfo) {

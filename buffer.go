@@ -163,12 +163,18 @@ func BufferHeaderPreReleaseCBSet(header *BufferHeader, cb BHPreReleaseCB, userda
 	C.mmal_buffer_header_pre_release_cb_set(header.c, cb, userdata)
 }
 
-func BufferHeaderReplicate(dest, src BufferHeader) Status {
-	return Status(C.mmal_buffer_header_replicate(dest.c, src.c))
+func BufferHeaderReplicate(dest, src BufferHeader) error {
+	if err := Status(C.mmal_buffer_header_replicate(dest.c, src.c)); err != Success {
+		return nil
+	}
+	return nil
 }
 
-func BufferHeaderMemLock(header *BufferHeader) Status {
-	return Status(C.mmal_buffer_header_mem_lock(header.c))
+func BufferHeaderMemLock(header *BufferHeader) error {
+	if err := Status(C.mmal_buffer_header_mem_lock(header.c)); err != Success {
+		return nil
+	}
+	return nil
 }
 
 func BufferHeaderMemUnlock(header *BufferHeader) {

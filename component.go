@@ -22,28 +22,43 @@ type ComponentPrivateType struct {
 
 // TODO(zchee): implements ComponentType methods. error: undefined several C side methods.
 
-func ComponentCreate(name string, component *ComponentType) Status {
+func ComponentCreate(name string, component *ComponentType) error {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	return Status(C.mmal_component_create(cName, &component.c))
+	if err := Status(C.mmal_component_create(cName, &component.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
 func ComponentAcquire(component *ComponentType) {
 	C.mmal_component_acquire(component.c)
 }
 
-func ComponentRelease(component *ComponentType) Status {
-	return Status(C.mmal_component_release(component.c))
+func ComponentRelease(component *ComponentType) error {
+	if err := Status(C.mmal_component_release(component.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func ComponentDestroy(component *ComponentType) Status {
-	return Status(C.mmal_component_destroy(component.c))
+func ComponentDestroy(component *ComponentType) error {
+	if err := Status(C.mmal_component_destroy(component.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func ComponentEnable(component *ComponentType) Status {
-	return Status(C.mmal_component_enable(component.c))
+func ComponentEnable(component *ComponentType) error {
+	if err := Status(C.mmal_component_enable(component.c)); err != Success {
+		return err
+	}
+	return nil
 }
 
-func ComponentDisable(component *ComponentType) Status {
-	return Status(C.mmal_component_disable(component.c))
+func ComponentDisable(component *ComponentType) error {
+	if err := Status(C.mmal_component_disable(component.c)); err != Success {
+		return err
+	}
+	return nil
 }

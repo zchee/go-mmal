@@ -81,10 +81,13 @@ func (w WrapperType) TimeDisable() int64 {
 	return int64(w.c.time_disable)
 }
 
-func WrapperCreate(wrapper *WrapperType, name string) Status {
+func WrapperCreate(wrapper *WrapperType, name string) error {
 	n := C.CString(name)
 	defer C.free(unsafe.Pointer(n))
-	return Status(C.mmal_wrapper_create((**C.MMAL_WRAPPER_T)(&wrapper.c), n))
+	if err := Status(C.mmal_wrapper_create((**C.MMAL_WRAPPER_T)(&wrapper.c), n)); err != Success {
+		return err
+	}
+	return nil
 }
 
 const (
@@ -96,20 +99,32 @@ const (
 	WrapperFlagPayloadUseSharedMemory
 )
 
-func WrapperPortEnable(port *Port, flags uint32) Status {
-	return Status(C.mmal_wrapper_port_enable((*C.MMAL_PORT_T)(unsafe.Pointer(&port.c)), C.uint32_t(flags)))
+func WrapperPortEnable(port *Port, flags uint32) error {
+	if err := Status(C.mmal_wrapper_port_enable((*C.MMAL_PORT_T)(unsafe.Pointer(&port.c)), C.uint32_t(flags))); err != Success {
+		return err
+	}
+	return nil
 }
 
-func WrapperPortDisable(port *Port) Status {
-	return Status(C.mmal_wrapper_port_disable((*C.MMAL_PORT_T)(unsafe.Pointer(&port.c))))
+func WrapperPortDisable(port *Port) error {
+	if err := Status(C.mmal_wrapper_port_disable((*C.MMAL_PORT_T)(unsafe.Pointer(&port.c)))); err != Success {
+		return err
+	}
+	return nil
 }
 
-func WrapperBufferGetEmpty(port *Port, buffer *BufferHeader, flags uint32) Status {
-	return Status(C.mmal_wrapper_buffer_get_empty((*C.MMAL_PORT_T)(unsafe.Pointer(&port.c)), (**C.MMAL_BUFFER_HEADER_T)(unsafe.Pointer(&buffer.c)), C.uint32_t(flags)))
+func WrapperBufferGetEmpty(port *Port, buffer *BufferHeader, flags uint32) error {
+	if err := Status(C.mmal_wrapper_buffer_get_empty((*C.MMAL_PORT_T)(unsafe.Pointer(&port.c)), (**C.MMAL_BUFFER_HEADER_T)(unsafe.Pointer(&buffer.c)), C.uint32_t(flags))); err != Success {
+		return err
+	}
+	return nil
 }
 
-func WrapperBufferGetFull(port *Port, buffer *BufferHeader, flags uint32) Status {
-	return Status(C.mmal_wrapper_buffer_get_full((*C.MMAL_PORT_T)(unsafe.Pointer(&port.c)), (**C.MMAL_BUFFER_HEADER_T)(unsafe.Pointer(&buffer.c)), C.uint32_t(flags)))
+func WrapperBufferGetFull(port *Port, buffer *BufferHeader, flags uint32) error {
+	if err := Status(C.mmal_wrapper_buffer_get_full((*C.MMAL_PORT_T)(unsafe.Pointer(&port.c)), (**C.MMAL_BUFFER_HEADER_T)(unsafe.Pointer(&buffer.c)), C.uint32_t(flags))); err != Success {
+		return err
+	}
+	return nil
 }
 
 // TODO(zchee): mmal_wrapper_cancel does not appear to be in libmmal.so
@@ -117,6 +132,9 @@ func WrapperBufferGetFull(port *Port, buffer *BufferHeader, flags uint32) Status
 // 	return Status(C.mmal_wrapper_cancel(&wrapper.c))
 // }
 
-func WrapperDestroy(wrapper *WrapperType) Status {
-	return Status(C.mmal_wrapper_destroy(wrapper.c))
+func WrapperDestroy(wrapper *WrapperType) error {
+	if err := Status(C.mmal_wrapper_destroy(wrapper.c)); err != Success {
+		return err
+	}
+	return nil
 }

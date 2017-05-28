@@ -45,8 +45,11 @@ func PoolDestroy(pool *PoolType) {
 	C.mmal_pool_destroy(pool.c)
 }
 
-func PoolResize(pool *PoolType, header uint, payloadSize uint32) Status {
-	return Status(C.mmal_pool_resize(pool.c, C.uint(header), C.uint32_t(payloadSize)))
+func PoolResize(pool *PoolType, header uint, payloadSize uint32) error {
+	if err := Status(C.mmal_pool_resize(pool.c, C.uint(header), C.uint32_t(payloadSize))); err != Success {
+		return err
+	}
+	return nil
 }
 
 type PoolBHCBType C.MMAL_POOL_BH_CB_T
