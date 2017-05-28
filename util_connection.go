@@ -80,11 +80,11 @@ func (c ConnectionType) TimeDisable() int64 {
 	return int64(c.c.time_disable)
 }
 
-func ConnectionCreate(connection *ConnectionType, out, in Port, flags uint32) Status {
+func ConnectionCreate(connection *ConnectionType, out, in *Port, flags uint32) Status {
 	return Status(C.mmal_connection_create(&connection.c, out.c, in.c, C.uint32_t(flags)))
 }
 
-func ConnectionAcquire(connection ConnectionType) {
+func ConnectionAcquire(connection *ConnectionType) {
 	C.mmal_connection_acquire(connection.c)
 }
 
