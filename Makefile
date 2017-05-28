@@ -10,13 +10,14 @@ run: install
 	@ssh pi@raspberrypi.local GODEBUG=cgocheck=0 /home/pi/go/bin/go-picamera-preview
 
 install/lib: scp/lib
-	@ssh pi@raspberrypi.local PKG_CONFIG_PATH=/opt/vc/lib/pkgconfig /usr/local/go/bin/go install -x github.com/zchee/go-mmal
+	@ssh pi@raspberrypi.local PKG_CONFIG_PATH=/opt/vc/lib/pkgconfig /usr/local/go/bin/go install -x github.com/zchee/go-mmal github.com/zchee/go-mmal/bcmhost
 	${MAKE} copy
 
 scp/lib:
 	@ssh pi@raspberrypi.local mkdir -p /home/pi/go/src/github.com/zchee/go-mmal
 	@ssh pi@raspberrypi.local rm -rf /home/pi/go/src/github.com/zchee/go-mmal/*.go
 	@scp -q $(shell find . -maxdepth 1 -name '*.go' -and -not -name '_*') pi@raspberrypi.local:/home/pi/go/src/github.com/zchee/go-mmal
+	@scp -rq ./bcmhost pi@raspberrypi.local:/home/pi/go/src/github.com/zchee/go-mmal
 
 copy:
 	@rm -rf $(shell go env GOPATH)/pkg/darwin_amd64/github.com/zchee/go-mmal*
