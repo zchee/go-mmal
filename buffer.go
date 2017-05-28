@@ -141,19 +141,19 @@ const (
 	BufferHeaderVideoFlagProtected = BufferHeaderFlagFormatSpecificStart
 )
 
-func BufferHeaderAcquire(header BufferHeader) {
+func BufferHeaderAcquire(header *BufferHeader) {
 	C.mmal_buffer_header_acquire(header.c)
 }
 
-func BufferHeaderReset(header BufferHeader) {
+func BufferHeaderReset(header *BufferHeader) {
 	C.mmal_buffer_header_reset(header.c)
 }
 
-func BufferHeaderRelease(header BufferHeader) {
+func BufferHeaderRelease(header *BufferHeader) {
 	C.mmal_buffer_header_release(header.c)
 }
 
-func BufferHeaderReleseContinue(header BufferHeader) {
+func BufferHeaderReleseContinue(header *BufferHeader) {
 	C.mmal_buffer_header_release_continue(header.c)
 }
 
@@ -167,10 +167,10 @@ func BufferHeaderReplicate(dest, src BufferHeader) Status {
 	return Status(C.mmal_buffer_header_replicate(dest.c, src.c))
 }
 
-func BufferHeaderMemLock(header BufferHeader) Status {
+func BufferHeaderMemLock(header *BufferHeader) Status {
 	return Status(C.mmal_buffer_header_mem_lock(header.c))
 }
 
-func BufferHeaderMemUnlock(header BufferHeader) {
+func BufferHeaderMemUnlock(header *BufferHeader) {
 	C.mmal_buffer_header_mem_unlock(header.c)
 }
