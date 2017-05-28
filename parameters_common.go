@@ -25,22 +25,22 @@ type ParameterGroupMiracast int // (5 << 16)
 
 // Common MMAL parameter IDs.
 const (
-	ParameterUnused             ParameterGroupCommon = (0 << 16) + iota // < Never a valid parameter ID
-	ParameterSupportedEncodings                                         // < Takes a MMAL_PARAMETER_ENCODING_T
-	ParameterURI                                                        // < Takes a MMAL_PARAMETER_URI_T
-	ParameterChangeEventRequest                                         // < Takes a MMAL_PARAMETER_CHANGE_EVENT_REQUEST_T
-	ParameterZeroCopy                                                   // < Takes a MMAL_PARAMETER_BOOLEAN_T
-	ParameterBufferRequirements                                         // < Takes a MMAL_PARAMETER_BUFFER_REQUIREMENTS_T
-	ParameterStatistics                                                 // < Takes a MMAL_PARAMETER_STATISTICS_T
-	ParameterCoreStatistics                                             // < Takes a MMAL_PARAMETER_CORE_STATISTICS_T
-	ParameterMemUsage                                                   // < Takes a MMAL_PARAMETER_MEM_USAGE_T
-	ParameterBufferFlagFilter                                           // < Takes a MMAL_PARAMETER_UINT32_T
-	ParameterSeek                                                       // < Takes a MMAL_PARAMETER_SEEK_T
-	ParameterPowermonEnable                                             // < Takes a MMAL_PARAMETER_BOOLEAN_T
-	ParameterLogging                                                    // < Takes a MMAL_PARAMETER_LOGGING_T
-	ParameterSystemtime                                                 // < Takes a MMAL_PARAMETER_UINT64_T
-	ParameterNoImagePadding                                             // < Takes a MMAL_PARAMETER_BOOLEAN_T
-	ParameterLockstepEnable                                             // < Takes a MMAL_PARAMETER_BOOLEAN_T
+	ParameterUnused             ParameterGroupCommon = iota // < Never a valid parameter ID
+	ParameterSupportedEncodings                             // < Takes a MMAL_PARAMETER_ENCODING_T
+	ParameterURI                                            // < Takes a MMAL_PARAMETER_URI_T
+	ParameterChangeEventRequest                             // < Takes a MMAL_PARAMETER_CHANGE_EVENT_REQUEST_T
+	ParameterZeroCopy                                       // < Takes a MMAL_PARAMETER_BOOLEAN_T
+	ParameterBufferRequirements                             // < Takes a MMAL_PARAMETER_BUFFER_REQUIREMENTS_T
+	ParameterStatistics                                     // < Takes a MMAL_PARAMETER_STATISTICS_T
+	ParameterCoreStatistics                                 // < Takes a MMAL_PARAMETER_CORE_STATISTICS_T
+	ParameterMemUsage                                       // < Takes a MMAL_PARAMETER_MEM_USAGE_T
+	ParameterBufferFlagFilter                               // < Takes a MMAL_PARAMETER_UINT32_T
+	ParameterSeek                                           // < Takes a MMAL_PARAMETER_SEEK_T
+	ParameterPowermonEnable                                 // < Takes a MMAL_PARAMETER_BOOLEAN_T
+	ParameterLogging                                        // < Takes a MMAL_PARAMETER_LOGGING_T
+	ParameterSystemtime                                     // < Takes a MMAL_PARAMETER_UINT64_T
+	ParameterNoImagePadding                                 // < Takes a MMAL_PARAMETER_BOOLEAN_T
+	ParameterLockstepEnable                                 // < Takes a MMAL_PARAMETER_BOOLEAN_T
 )
 
 type ParameterHeader struct {
