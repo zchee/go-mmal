@@ -65,6 +65,6 @@ func (e EventParameterChangedType) Hdr() ParameterHeader {
 	return ParameterHeader{e.c.hdr}
 }
 
-func EventFormatChangedGet(buffer BufferHeader) EventFormatChangedType {
+func EventFormatChangedGet(buffer *BufferHeader) EventFormatChangedType {
 	return EventFormatChangedType{C.mmal_event_format_changed_get(buffer.c)}
 }
