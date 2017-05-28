@@ -159,7 +159,7 @@ func (c ClockEvent) Padding1() uint64 {
 	return uint64(c.c.padding1)
 }
 
-func (c ClockEvent) ClockEventInit(id uint32) ClockEvent {
+func ClockEventInit(id uint32) ClockEvent {
 	return ClockEvent{C.clock_event_init(C.uint32_t(id))}
 }
 
