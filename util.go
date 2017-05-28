@@ -35,9 +35,13 @@ func PortTypeToString(typ PortType) string {
 	return C.GoString(C.mmal_port_type_to_string(C.MMAL_PORT_TYPE_T(typ)))
 }
 
-func PortParameterAllocGet(port *Port, id, size uint32, status *Status) ParameterHeader {
-	s := C.MMAL_STATUS_T(*status)
-	return ParameterHeader{*C.mmal_port_parameter_alloc_get(port.c, C.uint32_t(id), C.uint32_t(size), &s)}
+func PortParameterAllocGet(port *Port, id, size uint32) (ParameterHeader, error) {
+	var s C.MMAL_STATUS_T
+	phdr := C.mmal_port_parameter_alloc_get(port.c, C.uint32_t(id), C.uint32_t(size), &s)
+	if Status(s) != Success {
+		return ParameterHeader{}, Status(s)
+	}
+	return ParameterHeader{*phdr}, nil
 }
 
 func PortParameterFree(param *ParameterHeader) {
