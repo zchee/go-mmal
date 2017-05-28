@@ -1,13 +1,13 @@
 install: scp
-	@ssh pi@raspberrypi.local PKG_CONFIG_PATH=/opt/vc/lib/pkgconfig /usr/local/go/bin/go install -x github.com/zchee/go-mmal/cmd/go-picamera-preview
+	@ssh pi@raspberrypi.local PKG_CONFIG_PATH=/opt/vc/lib/pkgconfig /usr/local/go/bin/go install -x github.com/zchee/go-mmal/cmd/preview
 
 scp:
 	@ssh pi@raspberrypi.local rm -rf /home/pi/go/src/github.com/zchee/go-mmal/cmd
 	@scp -rq $(CURDIR)/cmd pi@raspberrypi.local:/home/pi/go/src/github.com/zchee/go-mmal
-	@ssh pi@raspberrypi.local /usr/local/go/bin/go get -d github.com/zchee/go-mmal/cmd/go-picamera-preview
+	@ssh pi@raspberrypi.local /usr/local/go/bin/go get -d github.com/zchee/go-mmal/cmd/preview
 
 run: install
-	@ssh pi@raspberrypi.local GODEBUG=cgocheck=0 /home/pi/go/bin/go-picamera-preview
+	@ssh pi@raspberrypi.local GODEBUG=cgocheck=0 /home/pi/go/bin/preview
 
 install/lib: scp/lib
 	@ssh pi@raspberrypi.local PKG_CONFIG_PATH=/opt/vc/lib/pkgconfig /usr/local/go/bin/go install -x github.com/zchee/go-mmal github.com/zchee/go-mmal/bcmhost
