@@ -41,20 +41,20 @@ func PoolCreateWithAllocator(header uint, payloadSize uint32, allocatorContext u
 	return PoolType{C.mmal_pool_create_with_allocator(C.uint(header), C.uint32_t(payloadSize), allocatorContext, C.mmal_pool_allocator_alloc_t(allocatorAlloc), C.mmal_pool_allocator_free_t(allocatorFree))}
 }
 
-func PoolDestroy(pool PoolType) {
+func PoolDestroy(pool *PoolType) {
 	C.mmal_pool_destroy(pool.c)
 }
 
-func PoolResize(pool PoolType, header uint, payloadSize uint32) Status {
+func PoolResize(pool *PoolType, header uint, payloadSize uint32) Status {
 	return Status(C.mmal_pool_resize(pool.c, C.uint(header), C.uint32_t(payloadSize)))
 }
 
 type PoolBHCBType C.MMAL_POOL_BH_CB_T
 
-func PoolCallbackSet(pool PoolType, cb PoolBHCBType, userdata unsafe.Pointer) {
+func PoolCallbackSet(pool *PoolType, cb PoolBHCBType, userdata unsafe.Pointer) {
 	C.mmal_pool_callback_set(pool.c, cb, userdata)
 }
 
-func PoolPreReleaseCallbackSet(pool PoolType, cb PoolBHCBType, userdata unsafe.Pointer) {
+func PoolPreReleaseCallbackSet(pool *PoolType, cb PoolBHCBType, userdata unsafe.Pointer) {
 	C.mmal_pool_pre_release_callback_set(pool.c, cb, userdata)
 }
