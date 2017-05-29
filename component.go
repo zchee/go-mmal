@@ -43,7 +43,7 @@ func (c ComponentType) IsEnabled() uint32 {
 }
 
 func (c ComponentType) Control() *Port {
-	return c.c.control
+	return &Port{c.c.control}
 }
 
 func (c ComponentType) InputNum() uint32 {
