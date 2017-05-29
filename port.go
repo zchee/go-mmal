@@ -31,8 +31,9 @@ type Port struct {
 	c *C.MMAL_PORT_T
 }
 
-// TODO(zchee): implements
-// func (p Port) Priv() PortPrivate {}
+func (p Port) Priv() PortPrivateType {
+	return PortPrivateType{p.c.priv}
+}
 
 func (p Port) Name() string {
 	return C.GoString(p.c.name)
