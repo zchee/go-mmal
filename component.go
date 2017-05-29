@@ -9,6 +9,8 @@ package mmal
 */
 import "C"
 import (
+	"bytes"
+	"encoding/binary"
 	"unsafe"
 )
 
@@ -40,16 +42,21 @@ func (c ComponentType) IsEnabled() uint32 {
 	return uint32(c.c.is_enabled)
 }
 
-func (c ComponentType) Control() Port {
-	return Port{c.c.control}
+func (c ComponentType) Control() *Port {
+	return c.c.control
 }
 
 func (c ComponentType) InputNum() uint32 {
 	return uint32(c.c.input_num)
 }
 
-func (c ComponentType) Input() Port {
-	return Port{*c.c.input}
+func (c ComponentType) Input() []*C.MMAL_PORT_T {
+	ps := []*C.MMAL_PORT_T{}
+	buf := C.GoBytes(unsafe.Pointer(c.c.input), C.int(unsafe.Sizeof(c.c.input)))
+	if err := binary.Read(bytes.NewReader(buf), binary.LittleEndian, ps); err != nil {
+		return nil
+	}
+	return ps
 }
 
 func (c ComponentType) OutputNum() uint32 {
