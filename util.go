@@ -6,6 +6,11 @@ package mmal
 
 /*
 #include <interface/mmal/util/mmal_util.h>
+
+extern char *fourcc_to_string(uint32_t fourcc) {
+	char buf[5];
+	return mmal_4cc_to_string(buf, sizeof(buf), fourcc);
+}
 */
 import "C"
 import (
@@ -73,10 +78,10 @@ func UtilGetPort(comp *ComponentType, typ PortType, index uint) Port {
 	return Port{port}
 }
 
-func FourccToString(buf string, len int, fourcc uint32) string {
-	b := C.CString(buf)
-	defer C.free(unsafe.Pointer(b))
-	return C.GoString(C.mmal_4cc_to_string(b, C.size_t(len), C.uint32_t(fourcc)))
+func FourccToString(fourcc uint32) string {
+	var buf *C.char
+	defer C.free(unsafe.Pointer(buf))
+	return C.GoString(C.fourcc_to_string(C.uint32_t(fourcc)))
 }
 
 func UtilRgbOrderFixed(port *Port) int {
